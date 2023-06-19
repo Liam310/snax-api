@@ -70,8 +70,6 @@ function seed({ categoriesData, snacksData, drinksData }) {
       );
       return db.query(queryString);
     });
-
-  // - drinks
 }
 
 module.exports = seed;

@@ -1,28 +1,29 @@
 {
-  "name": "be-node-postgres",
+  "name": "clients-and-pools",
   "version": "1.0.0",
-  "description": "We're making an api to keep track of all the tasty treats that the northcoders eat throughout the day. Some setup has been done to write a seed script to populate the database and your task is to create the first end point.",
-  "main": "app.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev": "node app.js",
-    "start": "node listen.js",
-    "setup-dbs": "psql -f ./db/seeds/setup.sql",
-    "seed:prod": "NODE_ENV=production DATABASE_URL=$(heroku config:get DATABASE_URL) npm run seed",
-    "seed": "node ./db/seeds/run-seed.js"
+    "seed-data": "PGDATABASE=nc_snacks node db/run-seed.js ",
+    "setup-db": "psql -f ./db/setup-db.sql"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/northcoders/nc-snacks-backup-pr.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "jest": "^28.1.0",
-    "nodemon": "^2.0.16",
-    "supertest": "^6.3.0"
+  "bugs": {
+    "url": "https://github.com/northcoders/nc-snacks-backup-pr/issues"
   },
+  "homepage": "https://github.com/northcoders/nc-snacks-backup-pr#readme",
   "dependencies": {
-    "dotenv": "^16.0.3",
-    "express": "^4.18.1",
-    "pg": "^8.8.0",
+    "pg": "^8.11.0",
     "pg-format": "^1.0.4"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
   }
 }

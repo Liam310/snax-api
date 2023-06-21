@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "PGDATABASE=nc_snacks jest --detectOpenHandles",
+    "test": "npm run seed-data && PGDATABASE=nc_snacks jest",
     "seed-data": "PGDATABASE=nc_snacks node db/run-seed.js ",
     "setup-db": "psql -f ./db/setup-db.sql"
   },

@@ -51,6 +51,8 @@ describe("GET /api/snacks/:id", () => {
   });
 });
 
+// test for DELETE /api/snacks/:id
+
 describe("POST /api/snacks", () => {
   test("201: responds with the newly created snack object", () => {
     const requestBody = {

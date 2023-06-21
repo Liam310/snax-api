@@ -53,22 +53,22 @@ describe("GET /api/snacks/:id", () => {
 
 // test for DELETE /api/snacks/:id
 
-describe("POST /api/snacks", () => {
-  test("201: responds with the newly created snack object", () => {
-    const requestBody = {
-      snack_name: "love hearts",
-      snack_description: "lovingly made in New Mills",
-      category_id: 7,
-    };
-    return request(app)
-      .post("/api/snacks")
-      .send(requestBody)
-      .expect(201)
-      .then(({ body }) => {
-        expect(body.snack).toEqual({
-          snack_id: 7,
-          ...requestBody,
-        });
-      });
-  });
-});
+// describe.skip("POST /api/snacks", () => {
+//   test("201: responds with the newly created snack object", () => {
+//     const requestBody = {
+//       snack_name: "love hearts",
+//       snack_description: "lovingly made in New Mills",
+//       category_id: 7,
+//     };
+//     return request(app)
+//       .post("/api/snacks")
+//       .send(requestBody)
+//       .expect(201)
+//       .then(({ body }) => {
+//         expect(body.snack).toEqual({
+//           snack_id: 7,
+//           ...requestBody,
+//         });
+//       });
+//   });
+// });

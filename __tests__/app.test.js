@@ -35,10 +35,38 @@ describe("GET /api/snacks/:id", () => {
   });
   test("400: responds with an error when snack_id is an invalid type", () => {
     return request(app)
-        .get("/api/snacks/nonsense")
-        .expect(400)
-        .then(({ body }) => {
-          expect(body.msg).toBe("Bad request");
+      .get("/api/snacks/nonsense")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("404: responds with an error when snack_id is valid, but does not exist", () => {
+    return request(app)
+      .get("/api/snacks/9999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found");
+      });
+  });
+});
+
+describe("POST /api/snacks", () => {
+  test("201: responds with the newly created snack object", () => {
+    const requestBody = {
+      snack_name: "love hearts",
+      snack_description: "lovingly made in New Mills",
+      category_id: 7,
+    };
+    return request(app)
+      .post("/api/snacks")
+      .send(requestBody)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.snack).toEqual({
+          snack_id: 7,
+          ...requestBody,
         });
+      });
   });
 });

@@ -26,8 +26,4 @@ app.use(handleCustomErrors);
 
 app.use(handleServerErrors);
 
-app.listen(9090, () => {
-  console.log(`app is listening on port 9090`);
-});
-
 module.exports = app;

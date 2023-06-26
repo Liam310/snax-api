@@ -3,6 +3,7 @@ const { getApi } = require("./controllers/api.controllers");
 const {
   getSnacksById,
   postSnack,
+  getAllSnacks,
 } = require("./controllers/snacks.controllers");
 const {
   handlePsqlErrors,
@@ -17,6 +18,8 @@ app.use(express.json());
 app.get("/api", getApi);
 
 app.get("/api/snacks/:id", getSnacksById);
+
+app.get("/api/snacks", getAllSnacks);
 
 app.post("/api/snacks", postSnack);
 

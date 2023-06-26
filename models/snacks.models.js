@@ -21,3 +21,25 @@ exports.insertSnack = (snack_name, price, snack_description, category_id) => {
       return rows[0];
     });
 };
+
+exports.selectAllSnacks = (category_id, sort_by = "snack_id") => {
+  const validSortBy = ["snack_name", "snack_id"];
+  if (!validSortBy.includes(sort_by)) {
+    return Promise.reject({ status: 400, msg: "Bad request" });
+  }
+
+  let query = "SELECT * FROM snacks ";
+  const queryValues = [];
+
+  if (category_id) {
+    query += "WHERE category_id = $1 ";
+    queryValues.push(category_id);
+  }
+
+  if (sort_by) {
+    query += `ORDER BY ${sort_by} ASC`;
+  }
+  return db.query(query, queryValues).then(({ rows }) => {
+    return rows;
+  });
+};

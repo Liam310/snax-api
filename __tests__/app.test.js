@@ -5,7 +5,6 @@ const seed = require("../db/seed");
 const data = require("../db/data");
 
 beforeEach(() => {
-  console.log("seeding!!!")
   return seed(data);
 });
 
@@ -34,7 +33,7 @@ describe("GET /api/snacks/:id", () => {
         expect(body.snack).toMatchObject({
           // jest assertion
           snack_id: 1,
-          snack_name: "Kit Kat",
+          snack_name: "kit kat",
           snack_description: "time for a break",
           category_id: 3,
         });
@@ -58,24 +57,79 @@ describe("GET /api/snacks/:id", () => {
   });
 });
 
-// test for DELETE /api/snacks/:id
+describe("POST /api/snacks", () => {
+  test("201: responds with the newly created snack object", () => {
+    const requestBody = {
+      snack_name: "love hearts",
+      snack_description: "lovingly made in New Mills",
+      category_id: 7,
+    };
+    return request(app)
+      .post("/api/snacks")
+      .send(requestBody)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.snack).toEqual({
+          snack_id: 14,
+          ...requestBody,
+        });
+      });
+  });
+});
 
-// describe.skip("POST /api/snacks", () => {
-//   test("201: responds with the newly created snack object", () => {
-//     const requestBody = {
-//       snack_name: "love hearts",
-//       snack_description: "lovingly made in New Mills",
-//       category_id: 7,
-//     };
-//     return request(app)
-//       .post("/api/snacks")
-//       .send(requestBody)
-//       .expect(201)
-//       .then(({ body }) => {
-//         expect(body.snack).toEqual({
-//           snack_id: 7,
-//           ...requestBody,
-//         });
-//       });
-//   });
-// });
+describe("GET /api/snacks", () => {
+  test("200 responds with an array of all snacks", () => {
+    return request(app)
+      .get("/api/snacks")
+      .expect(200)
+      .then(({ body }) => {
+        const { snacks } = body;
+        expect(snacks).toHaveLength(13);
+        snacks.forEach((snack) => {
+          expect(snack).toHaveProperty("snack_id", expect.any(Number));
+          expect(snack).toHaveProperty("snack_name", expect.any(String));
+          expect(snack).toHaveProperty("snack_description", expect.any(String));
+          expect(snack).toHaveProperty("category_id", expect.any(Number));
+        });
+      });
+  });
+  test("200: accepts a category_id query which responds with only snacks with that category_id ", () => {
+    return request(app)
+      .get("/api/snacks?category_id=2")
+      .expect(200)
+      .then(({ body }) => {
+        const { snacks } = body;
+        expect(snacks).toHaveLength(6);
+        snacks.forEach((snack) => {
+          expect(snack.category_id).toBe(2);
+        });
+      });
+  });
+  test("200: accepts a sort_by query which sorts by snack_name (ascending order by default)", () => {
+    return request(app)
+      .get("/api/snacks?sort_by=snack_name")
+      .expect(200)
+      .then(({ body }) => {
+        const { snacks } = body;
+        expect(snacks).toHaveLength(13);
+        expect(snacks).toBeSortedBy("snack_name");
+      });
+  });
+
+  test("400: responds with bad request for an invalid category_id", () => {
+    return request(app)
+      .get("/api/snacks?category_id=banana")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("400: responds with bad request for an invalid sort_by", () => {
+    return request(app)
+      .get("/api/snacks?sort_by=banana")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+});

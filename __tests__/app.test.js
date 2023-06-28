@@ -12,6 +12,17 @@ afterAll(() => {
   return db.end();
 });
 
+describe("ALL non-existent path", () => {
+  test("404: should return a custom error message when the path is not found", () => {
+    return request(app)
+      .get("/api/notapath")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found");
+      });
+  });
+});
+
 describe("GET /api", () => {
   test("200: responds with an okay message", () => {
     return request(app) // arrange
@@ -115,7 +126,14 @@ describe("GET /api/snacks", () => {
         expect(snacks).toBeSortedBy("snack_name");
       });
   });
-
+  test("200: responds with an empty array if the category exists but there are no snacks in that category", () => {
+    return request(app)
+      .get("/api/snacks?category_id=8")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.snacks).toHaveLength(0);
+      });
+  });
   test("400: responds with bad request for an invalid category_id", () => {
     return request(app)
       .get("/api/snacks?category_id=banana")
@@ -130,6 +148,14 @@ describe("GET /api/snacks", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("404: responds with not found if the category does not exist", () => {
+    return request(app)
+      .get("/api/snacks?category_id=10")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found");
       });
   });
 });

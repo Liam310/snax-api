@@ -1,3 +1,4 @@
+const { checkCategoryExists } = require("../models/categories.models");
 const {
   selectSnacksById,
   insertSnack,
@@ -24,8 +25,16 @@ exports.postSnack = (req, res) => {
 
 exports.getAllSnacks = (req, res, next) => {
   const { category_id, sort_by } = req.query;
-  selectAllSnacks(category_id, sort_by)
-    .then((snacks) => {
+
+  const promises = [selectAllSnacks(category_id, sort_by)];
+
+  if (category_id) {
+    promises.push(checkCategoryExists(category_id));
+  }
+
+  Promise.all(promises)
+    .then((resolvedPromises) => {
+      const snacks = resolvedPromises[0];
       res.status(200).send({ snacks });
     })
     .catch(next);

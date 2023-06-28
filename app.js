@@ -23,6 +23,10 @@ app.get("/api/snacks", getAllSnacks);
 
 app.post("/api/snacks", postSnack);
 
+app.all("*", (_, res) => {
+  res.status(404).send({  msg: "Not found" });
+});
+
 app.use(handlePsqlErrors);
 
 app.use(handleCustomErrors);

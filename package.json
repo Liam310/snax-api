@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "test-utils": "jest utils",
+    "test-app": "jest app",
     "seed": "node db/run-seed.js ",
     "setup-dbs": "psql -f ./db/setup-dbs.sql",
     "dev": "node listen.js",

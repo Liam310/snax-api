@@ -2,13 +2,15 @@
   "name": "snacks_api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "listen.js",
   "scripts": {
     "test": "jest",
     "test-utils": "jest utils",
     "seed": "node db/run-seed.js ",
     "setup-dbs": "psql -f ./db/setup-dbs.sql",
-    "dev": "node listen.js"
+    "dev": "node listen.js",
+    "seed-prod": "NODE_ENV=production npm run seed",
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
